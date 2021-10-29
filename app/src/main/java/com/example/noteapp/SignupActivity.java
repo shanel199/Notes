@@ -25,7 +25,7 @@ import Model.User;
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button signup;
-    EditText email_et, password_et, cnfpassword_et;
+    EditText email_et, password_et;
     TextView already;
     private FirebaseAuth mAuth;
 
@@ -39,7 +39,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         signup.setOnClickListener(this);
         email_et = findViewById(R.id.email_et);
         password_et = findViewById(R.id.password_et);
-        cnfpassword_et = findViewById(R.id.cnfpassword_et);
         already = findViewById(R.id.already);
         already.setOnClickListener(this);
 
@@ -61,8 +60,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void signup() {
         String email = email_et.getText().toString().trim();
         String password = password_et.getText().toString().trim();
-        String cnfpassword = cnfpassword_et.getText().toString().trim();
-
         if(email.isEmpty()){
             email_et.setError("This field is required");
             email_et.requestFocus();
@@ -83,11 +80,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             password_et.requestFocus();
             return;
         }
-        if(password != cnfpassword){
-            password_et.setError("The passwords does not match");
-            password_et.requestFocus();
-            return;
-        }
+
         {
             mAuth.fetchSignInMethodsForEmail(email_et.getText().toString())
                     .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
