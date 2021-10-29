@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SignupActivity">
+    tools:context=".SignupActivity"
+    android:background="@color/teal_200">
+
 
     <TextView
         android:id="@+id/textView2"
@@ -12,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
         android:gravity="center_vertical"
-        android:text="Notes!"
+        android:text="Sign up."
+        android:textColor="@color/white"
         android:textSize="50dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,6 +29,7 @@
         android:id="@+id/email_et"
         android:layout_height="50dp"
         android:hint="Email ID"
+        android:textColor="@color/white"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:textStyle="bold"
@@ -42,6 +46,7 @@
         android:layout_width="match_parent"
         android:id="@+id/password_et"
         android:layout_height="50dp"
+        android:textColor="@color/white"
         android:hint="Password"
         android:textStyle="bold"
         android:layout_marginTop="20dp"
@@ -55,23 +60,6 @@
         app:layout_constraintVertical_bias="0.0"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:id="@+id/cnfpassword_et"
-        android:layout_height="50dp"
-        android:hint="Confirm Password"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:background="@drawable/strokebtn"
-        android:layout_marginEnd="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/password_et"
-        app:layout_constraintStart_toStartOf="@+id/password_et"
-        app:layout_constraintTop_toBottomOf="@+id/password_et"
-        app:layout_constraintVertical_bias="0.0"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"/>
 
     <Button
         android:id="@+id/signup"
@@ -80,18 +68,20 @@
         android:layout_marginTop="80dp"
         android:background="@drawable/roundedbtn"
         android:text="Sign up"
+        android:textColor="@color/black"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/cnfpassword_et"
-        app:layout_constraintStart_toStartOf="@+id/cnfpassword_et"
-        app:layout_constraintTop_toBottomOf="@+id/cnfpassword_et"
+        app:layout_constraintEnd_toEndOf="@+id/password_et"
+        app:layout_constraintStart_toStartOf="@+id/password_et"
+        app:layout_constraintTop_toBottomOf="@+id/password_et"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/already"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:textColor="@color/white"
+        android:layout_marginTop="200dp"
         android:text="Already have an account? Sign in!"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/signup"

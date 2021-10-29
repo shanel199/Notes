@@ -25,7 +25,7 @@ import Model.User;
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button signup;
-    EditText email_et, password_et, cnfpassword_et;
+    EditText email_et, password_et;
     TextView already;
     private FirebaseAuth mAuth;
 
@@ -39,7 +39,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         signup.setOnClickListener(this);
         email_et = findViewById(R.id.email_et);
         password_et = findViewById(R.id.password_et);
-        cnfpassword_et = findViewById(R.id.cnfpassword_et);
         already = findViewById(R.id.already);
         already.setOnClickListener(this);
 
@@ -61,7 +60,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void signup() {
         String email = email_et.getText().toString().trim();
         String password = password_et.getText().toString().trim();
-        String cnfpassword = cnfpassword_et.getText().toString().trim();
 
         if(email.isEmpty()){
             email_et.setError("This field is required");
@@ -83,28 +81,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             password_et.requestFocus();
             return;
         }
-        if(password != cnfpassword){
-            password_et.setError("The passwords does not match");
-            password_et.requestFocus();
-            return;
-        }
-        {
-            mAuth.fetchSignInMethodsForEmail(email_et.getText().toString())
-                    .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-                            boolean check = !task.getResult().getSignInMethods().isEmpty();
-                            if(check)
-                            {
-                                Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        }
+
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     User user = new User(email, password);
                     FirebaseDatabase.getInstance().getReference("Users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -113,24 +94,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                                if (user.isEmailVerified()) {
-                                    startActivity(new Intent(SignupActivity.this, StartActivity.class));
-                                }
-                                else {
-                                    user.sendEmailVerification();
-                                    Toast.makeText(SignupActivity.this, "Check your email to verify your account", Toast.LENGTH_LONG).show();
-                                }
-                                if(!task.isSuccessful())
-                                {
-                                    Toast.makeText(SignupActivity.this, "Failed to sign up", Toast.LENGTH_LONG).show();
-                                }
+                                Toast.makeText(SignupActivity.this, "User has been successfully registered!", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(SignupActivity.this, "Failed to sign up, try again!", Toast.LENGTH_LONG).show();
                             }
                         }
-
                     });
-    }}
-
+                }else {
+                    Toast.makeText(SignupActivity.this, "Failed to sign up", Toast.LENGTH_LONG).show();
+                }
+            }
         });
     }}
