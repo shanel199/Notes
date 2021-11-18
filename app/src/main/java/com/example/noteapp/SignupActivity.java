@@ -25,7 +25,7 @@ import Model.User;
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button signup;
-    EditText email_et, password_et;
+    EditText username_et, email_et, password_et;
     TextView already;
     private FirebaseAuth mAuth;
 
@@ -37,6 +37,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         mAuth = FirebaseAuth.getInstance();
         signup = findViewById(R.id.signup);
         signup.setOnClickListener(this);
+        username_et = findViewById(R.id.username_et);
         email_et = findViewById(R.id.email_et);
         password_et = findViewById(R.id.password_et);
         already = findViewById(R.id.already);
@@ -58,35 +59,55 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 }
 
     private void signup() {
+        String username = username_et.getText().toString().trim();
         String email = email_et.getText().toString().trim();
         String password = password_et.getText().toString().trim();
 
-        if(email.isEmpty()){
+        if (username.isEmpty()) {
+            username_et.setError("This field is required");
+            username_et.requestFocus();
+            return;
+        }
+
+        if (email.isEmpty()) {
             email_et.setError("This field is required");
             email_et.requestFocus();
             return;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             email_et.setError("Please provide a valid email");
             email_et.requestFocus();
             return;
         }
-        if(password.isEmpty()){
+        if (password.isEmpty()) {
             password_et.setError("This field is required");
             password_et.requestFocus();
             return;
         }
-        if(password.length() < 6){
+        if (password.length() < 6) {
             password_et.setError("Min password length should be 6 characters");
             password_et.requestFocus();
             return;
+        }
+
+        {
+            mAuth.fetchSignInMethodsForEmail(email_et.getText().toString())
+                    .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+                            boolean check = !task.getResult().getSignInMethods().isEmpty();
+                            if (check) {
+                                Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    User user = new User(email, password);
+                    User user = new User(username, email, password);
                     FirebaseDatabase.getInstance().getReference("Users")
                             .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                             .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -94,15 +115,24 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(SignupActivity.this, "User has been successfully registered!", Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(SignupActivity.this, "Failed to sign up, try again!", Toast.LENGTH_LONG).show();
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                if (user.isEmailVerified()) {
+                                    startActivity(new Intent(SignupActivity.this, StartActivity.class));
+                                } else {
+                                    user.sendEmailVerification();
+                                    Toast.makeText(SignupActivity.this, "Check your email to verify your account", Toast.LENGTH_LONG).show();
+                                }
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(SignupActivity.this, "Failed to sign up", Toast.LENGTH_LONG).show();
+                                }
                             }
                         }
+
                     });
-                }else {
-                    Toast.makeText(SignupActivity.this, "Failed to sign up", Toast.LENGTH_LONG).show();
+
                 }
             }
         });
     }}
+

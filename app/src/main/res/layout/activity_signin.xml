@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SigninActivity"
-    android:background="@color/teal_200">
+    android:background="@color/midnight">
 
     <TextView
         android:id="@+id/textView2"
@@ -13,10 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="180dp"
         android:gravity="center_vertical"
+        android:fontFamily="@font/brandonbold"
         android:text="Sign in."
-        android:textColor="@color/white"
+        android:textColor="@color/peach"
         android:textSize="50dp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -28,10 +28,11 @@
         android:id="@+id/email_et"
         android:layout_height="50dp"
         android:hint="Email ID"
-        android:textColor="@color/white"
+        android:fontFamily="@font/brandonreg"
+        android:textColorHint="@color/peach"
+        android:textColor="@color/peach"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:textStyle="bold"
         android:layout_marginTop="50dp"
         android:layout_marginStart="20dp"
         android:background="@drawable/strokebtn"
@@ -45,9 +46,10 @@
         android:layout_width="match_parent"
         android:id="@+id/password_et"
         android:layout_height="50dp"
-        android:textColor="@color/white"
+        android:textColor="@color/peach"
         android:hint="Password"
-        android:textStyle="bold"
+        android:textColorHint="@color/peach"
+        android:fontFamily="@font/brandonreg"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:background="@drawable/strokebtn"
@@ -67,7 +69,8 @@
         android:layout_marginTop="80dp"
         android:background="@drawable/roundedbtn"
         android:text="Sign in"
-        android:textColor="@color/black"
+        android:fontFamily="@font/brandonbold"
+        android:textColor="@color/midnight"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/password_et"
@@ -80,13 +83,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
+        android:fontFamily="@font/brandonreg"
         android:text="Don't have an account? Sign up!"
-        android:textColor="@color/white"
+        android:textColor="@color/peach"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/signin"
         app:layout_constraintStart_toStartOf="@+id/signin"
         app:layout_constraintTop_toBottomOf="@+id/signin"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
